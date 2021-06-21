@@ -11,8 +11,9 @@ import com.nsga.generation.Organism;
 import com.nsga.generation.Population;
 
 /**
- * @author jpw91
- *
+ * Panel for the Natural Selection Genetic Algorithm
+ * @author Red Williams <red.devcs@gmail.com>
+ * @since Jun 21, 2021
  */
 public class NSGADisplay extends JPanel {
 
@@ -39,7 +40,9 @@ public class NSGADisplay extends JPanel {
     public static final int STARTING_Y = NSGAWindow.WINDOW_HEIGHT - 100;
 
     /**
-     * Display Constructor
+     * NSGADisplay Class Constructor
+     * @param width
+     * @param height
      */
     public NSGADisplay(int width, int height) {
         setPreferredSize(new Dimension(width, height));
@@ -56,6 +59,10 @@ public class NSGADisplay extends JPanel {
     }
 
 
+    /**
+     * Paints each Organisms on the screen
+     * @param g Painting Graphics Object
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -83,6 +90,9 @@ public class NSGADisplay extends JPanel {
     }
 
 
+    /**
+     * Initializes the loop
+     */
     private void init() {
         generationIncTimer = new Timer(1000, new ActionListener() {
             @Override

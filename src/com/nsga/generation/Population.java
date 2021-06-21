@@ -3,8 +3,9 @@ package com.nsga.generation;
 import com.nsga.NSGADisplay;
 
 /**
- * @author jpw91
- *
+ * Population Class
+ * @author Red Williams <red.devcs@gmail.com>
+ * @since Jun 21, 2021
  */
 public class Population {
 
@@ -13,7 +14,9 @@ public class Population {
     private static final double MUTATION_RATE = 0.02;
 
     /**
-     * Population Constructor
+     * Population Class Constructor
+     * Each Population represents a generation,
+     * and holds an array of Organisms
      */
     public Population() {
         // Create new Population of Organisms

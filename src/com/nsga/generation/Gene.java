@@ -1,8 +1,15 @@
 package com.nsga.generation;
 
+/**
+ * Gene Class
+ * @author Red Williams <red.devcs@gmail.com>
+ * @since Jun 21, 2021
+ */
 public class Gene {
 
     private double[] geneVector;
+
+    /** Multiplies the predetermined movement to increase visual effect */
     private static final int MOVEMENT_MULTIPLIER = 15;
 
     /**
