@@ -10,7 +10,7 @@ public class Gene {
     private double[] geneVector;
 
     /** Multiplies the predetermined movement to increase visual effect */
-    private static final int MOVEMENT_MULTIPLIER = 15;
+    private static final int MOVEMENT_MULTIPLIER = 3;
 
     /**
      * Gene Constructor

@@ -118,19 +118,39 @@ public class Organism {
 
 
     /**
-     * Calculates the fitness of a Organism, based on how close
-     * they got to the goal. The closer you are, the larger
-     * your fitness score
-     * @param goalX X position of the goal
-     * @param goalY Y position of the goal
+     * Calculates and returns the fitness of an organism
+     * @param x
+     * @param y
+     * @return
      */
-    public double calculateFitness(int x, int y) {
-        double d = distance(x, y, NSGADisplay.STARTING_X,
-            NSGADisplay.STARTING_Y);
-        fitness = d / Math.sqrt(Math.pow(NSGADisplay.STARTING_Y, 2) + Math.pow(
-            y, 2));
-        fitness = Math.round(fitness * 100.0) / 100.0;
+    public double calculateFitness() {
+        double distanceToGoal = distance(xPos, yPos, NSGADisplay.GOAL_X,
+            NSGADisplay.GOAL_Y);
+        double normalised = distanceToGoal / (NSGADisplay.STARTING_Y
+            - NSGADisplay.GOAL_Y);
+        fitness = 1 - normalised;
+        if (fitness < 0) {
+            fitness = 0.0;
+        }
+        System.out.println("Distance: " + distanceToGoal + ", Fitness: "
+            + fitness);
+        System.out.println(xPos + " " + yPos);
         return fitness;
+
+    }
+
+
+    /**
+     * Helper function for calculateFitness(),
+     * Gets the distance between two points using distance formula
+     * @param x1 Initial X Position
+     * @param y1 Initial Y Position
+     * @param x2 Final X Position
+     * @param y2 Final Y Position
+     * @return the distance between two points
+     */
+    private double distance(int x1, int y1, int x2, int y2) {
+        return Math.sqrt((Math.pow(x2 - x1, 2)) + (Math.pow(y2 - y1, 2)));
     }
 
 
@@ -171,21 +191,6 @@ public class Organism {
         sb.append("]");
 
         return sb.toString();
-    }
-
-
-    /**
-     * Helper function for calculateFitness(),
-     * Gets the distance between two points using distance formula
-     * @return the distance between two points
-     */
-    private double distance(int x1, int y1, int x2, int y2) {
-        return Math.sqrt(
-
-            (Math.pow(x2, 2) - Math.pow(x1, 2)) + (Math.pow(y2, 2) - Math.pow(
-                y1, 2))
-
-        );
     }
 
 }

@@ -10,7 +10,8 @@ import com.nsga.NSGADisplay;
 public class Population {
 
     private Organism[] organisms;
-    private static final int POPULATION_SIZE = 30;
+    private double averagePopulation;
+    private static final int POPULATION_SIZE = 2;
     private static final double MUTATION_RATE = 0.02;
 
     /**

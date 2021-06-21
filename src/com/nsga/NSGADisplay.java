@@ -39,6 +39,12 @@ public class NSGADisplay extends JPanel {
     /** Starting Y position of the dots */
     public static final int STARTING_Y = NSGAWindow.WINDOW_HEIGHT - 100;
 
+    /** Goal X position */
+    public static final int GOAL_X = STARTING_X;
+
+    /** Goal Y position */
+    public static final int GOAL_Y = 10;
+
     /**
      * NSGADisplay Class Constructor
      * @param width
@@ -50,12 +56,50 @@ public class NSGADisplay extends JPanel {
         setFocusable(true);
         requestFocus();
 
-// init();
         currentPopulation = new Population();
         currentOrganisms = currentPopulation.getOrganisms();
-        repaint();
+
+        init();
+
+// repaint();
 
         System.out.println("Finished");
+    }
+
+
+    /**
+     * Initializes the loop. This method is recursive.
+     * The idea is that after each organisms movements have been
+     * displayed, the next population is made, the instace variables
+     * are reset and incremented, and the process starts over again
+     */
+    private void init() {
+        generationIncTimer = new Timer(TIMER_DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+
+                /*
+                 * For each iteration,
+                 * apply the next gene for each organism
+                 */
+                for (int i = 0; i < currentOrganisms.length; i++) {
+                    currentOrganisms[i].applyNextGene();
+                }
+                repaint();
+// System.out.println(count++);
+                if (!currentOrganisms[0].hasNextGene()) {
+                    generationIncTimer.stop();
+                    count = 0;
+                    for (int i = 0; i < currentOrganisms.length; i++) {
+                        currentOrganisms[i].calculateFitness();
+                    }
+
+                    // Create new Generations
+// init();
+                }
+            }
+        });
+        generationIncTimer.start();
     }
 
 
@@ -73,7 +117,7 @@ public class NSGADisplay extends JPanel {
 
         // Paint the destination square
         g.setColor(Color.WHITE);
-        g.fillRect(STARTING_X, 10, DESTINATION_RECT_SIZE,
+        g.fillRect(GOAL_X, GOAL_Y, DESTINATION_RECT_SIZE,
             DESTINATION_RECT_SIZE);
 
         // Paint window information
@@ -83,30 +127,11 @@ public class NSGADisplay extends JPanel {
 
         // Otherwise, paint population's next step
         for (int j = 0; j < currentOrganisms.length; j++) {
+
             g.fillOval(currentOrganisms[j].getX(), currentOrganisms[j].getY(),
                 CIRCLE_SIZE, CIRCLE_SIZE);
         }
 
-    }
-
-
-    /**
-     * Initializes the loop
-     */
-    private void init() {
-        generationIncTimer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-
-                System.out.println(count++);
-                if (count == 5) {
-                    generationIncTimer.stop();
-                    count = 0;
-                    init();
-                }
-            }
-        });
-        generationIncTimer.start();
     }
 
 }
