@@ -132,9 +132,9 @@ public class Organism {
         if (fitness < 0) {
             fitness = 0.0;
         }
-        System.out.println("Distance: " + distanceToGoal + ", Fitness: "
-            + fitness);
-        System.out.println(xPos + " " + yPos);
+// System.out.println("Distance: " + distanceToGoal + ", Fitness: "
+// + fitness);
+// System.out.println(xPos + " " + yPos);
         return fitness;
 
     }
@@ -180,17 +180,9 @@ public class Organism {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < genes.length; i++) {
-            sb.append(genes[i].toString());
-            if (i != genes.length - 1) {
-                sb.append(", ");
-            }
-        }
-        sb.append("]");
 
-        return sb.toString();
+        return "[xPos: " + xPos + ", yPos: " + yPos + "] | Fitness : "
+            + fitness;
     }
 
 }

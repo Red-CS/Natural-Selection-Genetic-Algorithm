@@ -63,7 +63,7 @@ public class NSGADisplay extends JPanel {
 
 // repaint();
 
-        System.out.println("Finished");
+// System.out.println("Finished");
     }
 
 
@@ -95,7 +95,15 @@ public class NSGADisplay extends JPanel {
                     }
 
                     // Create new Generations
-// init();
+                    System.out.println(
+                        "----------------------------------------------------------------------------------");
+                    System.out.println("Generation # " + generationNumber
+                        + "\t");
+                    System.out.println(currentPopulation.toString());
+                    currentPopulation = currentPopulation.naturalSelection();
+                    currentOrganisms = currentPopulation.getOrganisms();
+                    generationNumber++;
+                    init();
                 }
             }
         });
