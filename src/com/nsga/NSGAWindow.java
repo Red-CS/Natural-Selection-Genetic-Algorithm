@@ -11,7 +11,10 @@ import javax.swing.WindowConstants;
 @SuppressWarnings("serial")
 public class NSGAWindow extends JFrame {
 
+    /** Frame Width */
     public static final int WINDOW_WIDTH = 800;
+
+    /** Frame Height */
     public static final int WINDOW_HEIGHT = 600;
 
     /**
@@ -30,7 +33,8 @@ public class NSGAWindow extends JFrame {
 
 
     /**
-     * @param args
+     * Main Method
+     * @param args Command line args
      */
     public static void main(String[] args) {
         new NSGAWindow();
