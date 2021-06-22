@@ -1,5 +1,7 @@
 package com.nsga.generation;
 
+import java.text.DecimalFormat;
+
 /**
  * Gene Class
  * @author Red Williams <red.devcs@gmail.com>
@@ -7,50 +9,51 @@ package com.nsga.generation;
  */
 public class Gene {
 
-    private double[] geneVector;
+    private double xGene;
+    private double yGene;
+    private DecimalFormat df;
 
     /** Multiplies the predetermined movement to increase visual effect */
-    private static final int MOVEMENT_MULTIPLIER = 15;
+    private static final int MOVEMENT_MULTIPLIER = 5;
 
     /**
      * Gene Constructor
      */
     public Gene() {
-        geneVector = new double[2];
-        geneVector[0] = Math.random() * MOVEMENT_MULTIPLIER * (((int)(Math
-            .random() * 2) == 0 ? -1 : 1));
-        geneVector[1] = Math.random() * MOVEMENT_MULTIPLIER * (((int)(Math
-            .random() * 2) == 0 ? -1 : 1));
+        xGene = Math.random() * MOVEMENT_MULTIPLIER * (((int)(Math.random()
+            * 2) == 0 ? -1 : 1));
+        yGene = Math.random() * MOVEMENT_MULTIPLIER * (((int)(Math.random()
+            * 2) == 0 ? -1 : 1));
+        df = new DecimalFormat("#.##");
     }
 
 
-    public Gene(int xGene, int yGene) {
-        geneVector = new double[2];
-        geneVector[0] = xGene;
-        geneVector[1] = yGene;
-    }
-
-
+    /**
+     * Returns the X Gene
+     * @return the X Gene
+     */
     public double getXGene() {
-        return geneVector[0];
+        return xGene;
     }
 
 
+    /**
+     * Returns the Y Gene
+     * @return the Y Gene
+     */
     public double getYGene() {
-        return geneVector[1];
+        return yGene;
     }
 
 
+    /**
+     * Returns a String representation of the Gene
+     * @return a String representation of the Gene
+     */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        sb.append(geneVector[0]);
-        sb.append(", ");
-        sb.append(geneVector[1]);
-        sb.append(")");
 
-        return sb.toString();
+        return "(" + df.format(xGene) + ", " + df.format(yGene) + ")";
     }
 
 }

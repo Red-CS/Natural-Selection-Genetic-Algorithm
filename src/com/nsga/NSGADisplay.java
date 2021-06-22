@@ -2,6 +2,7 @@ package com.nsga;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import com.nsga.generation.Population;
  * @author Red Williams <red.devcs@gmail.com>
  * @since Jun 21, 2021
  */
+@SuppressWarnings("serial")
 public class NSGADisplay extends JPanel {
 
     private double lastPopAvgFitness;
@@ -87,20 +89,22 @@ public class NSGADisplay extends JPanel {
                     currentOrganisms[i].applyNextGene();
                 }
                 repaint();
-// System.out.println(count++);
                 if (!currentOrganisms[0].hasNextGene()) {
                     generationIncTimer.stop();
 
+                    // Calculate fitnesses
                     for (int i = 0; i < currentOrganisms.length; i++) {
                         currentOrganisms[i].calculateFitness();
                     }
                     lastPopAvgFitness = currentPopulation
                         .calculateAverageFitness();
+
                     // Create new Generations
                     System.out.println(
-                        "----------------------------------------------------------------------------------");
-                    System.out.println("Generation # " + generationNumber
-                        + "\t");
+                        "\n-----------------------------------------------------");
+                    System.out.println("Generation # " + generationNumber + "\t"
+                        + "|| Average Fitness: " + df.format(
+                            lastPopAvgFitness));
                     System.out.println(currentPopulation.toString());
                     currentPopulation = currentPopulation.naturalSelection();
                     currentOrganisms = currentPopulation.getOrganisms();
@@ -131,9 +135,14 @@ public class NSGADisplay extends JPanel {
             DESTINATION_RECT_SIZE);
 
         // Paint window information
+        g.setFont(new Font(g.getFont().getFontName(), Font.PLAIN, 18));
         g.drawString("Generation: " + generationNumber, 20, STARTING_Y);
         g.drawString("Average Fitness: " + df.format(lastPopAvgFitness), 20,
             STARTING_Y + 20);
+        g.drawString("Mutation Rate: " + Population.MUTATION_RATE * 100 + "%",
+            20, STARTING_Y + 40);
+        g.drawString("Population Size: " + Population.POPULATION_SIZE, 20,
+            STARTING_Y + 60);
 
         // Otherwise, paint population's next step
         for (int j = 0; j < currentOrganisms.length; j++) {

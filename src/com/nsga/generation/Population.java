@@ -10,10 +10,20 @@ import com.nsga.NSGADisplay;
  */
 public class Population {
 
+    /** The organisms in the population */
     private Organism[] organisms;
+
+    /**
+     * Average fitness of the population
+     * Calculated after the GUI updates
+     */
     private double averageFitness;
-    private static final int POPULATION_SIZE = 100;
-    private static final double MUTATION_RATE = 0.02;
+
+    /** Population size, larger size for better results */
+    public static final int POPULATION_SIZE = 100;
+
+    /** Mutation rate of the population */
+    public static final double MUTATION_RATE = 0.02;
 
     /**
      * Population Class Constructor
@@ -32,28 +42,38 @@ public class Population {
     }
 
 
+    /**
+     * Population Secondary Class Constructor
+     * This Population Class Constructor is used for all
+     * subsequent generations
+     * @param newPopulation New Population representing the next generation
+     */
     public Population(Organism[] newPopulation) {
-        // Create new Population of Organisms based on the previous
+        // Set next population of organisms based on the previous
         organisms = newPopulation;
     }
 
 
     /**
      * Creates a new population based on the perfomance of the previous
+     * @return The next population
      */
     public Population naturalSelection() {
 
         // Create mating pool
         ArrayList<Organism> matingPool = new ArrayList<Organism>();
         for (Organism o : organisms) {
+
+            // Each organism is represented in the mating pool
+            // n * 1000 times, where n is the fitness of that organism
             for (int i = 0; i < (int)(o.getFitness() * 1000); i++) {
                 matingPool.add(o);
             }
         }
 
-// System.out.println(matingPool.size());
-
         // Choose Parents
+
+        // Make new Population
         Organism[] newPopulation = new Organism[POPULATION_SIZE];
 
         for (int i = 0; i < organisms.length; i++) {
@@ -62,8 +82,13 @@ public class Population {
             Organism father = matingPool.get((int)(Math.random() * matingPool
                 .size()));
 
+            // TODO: Add different crossover types
             Organism child = mother.crossover(father);
+
+            // Mutate child
             child.mutate(MUTATION_RATE);
+
+            // Add to array
             newPopulation[i] = child;
         }
 
@@ -72,34 +97,42 @@ public class Population {
     }
 
 
+    /**
+     * Returns the average fitness of the population
+     * @return the average fitness of the population
+     */
     public double getAverageFitness() {
         return averageFitness;
     }
 
 
+    /**
+     * Calculates and returns the average fitness of the population
+     * @return the average fitness of the population, after calculating it
+     */
     public double calculateAverageFitness() {
         double sum = 0;
         for (Organism o : organisms) {
             sum += o.getFitness();
         }
-        System.out.println(sum);
         averageFitness = sum / organisms.length;
-        System.out.println("Average Fitness: " + averageFitness);
         return averageFitness;
     }
 
 
+    /**
+     * Returns a String representation of a Population
+     * @return a String representation of a Population
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(
-            "----------------------------------------------------------------------------------\n");
+        sb.append("-----------------------------------------------------\n");
         for (int i = 0; i < organisms.length; i++) {
             sb.append("Organism  # " + i + "   :  " + organisms[i].toString()
                 + "\n");
         }
-        sb.append(
-            "----------------------------------------------------------------------------------\n");
+        sb.append("-----------------------------------------------------\n");
         return sb.toString();
 
     }

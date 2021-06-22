@@ -4,9 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * @author jpw91
- *
+ * Main Window of the program
+ * @author Red Williams <red.devcs@gmail.com>
+ * @since Jun 22, 2021
  */
+@SuppressWarnings("serial")
 public class NSGAWindow extends JFrame {
 
     public static final int WINDOW_WIDTH = 800;

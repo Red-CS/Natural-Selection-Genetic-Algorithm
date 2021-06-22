@@ -3,18 +3,35 @@ package com.nsga.generation;
 import java.text.DecimalFormat;
 import com.nsga.NSGADisplay;
 
+/**
+ * Organism Class
+ * Represents each Dot
+ * @author Red Williams <red.devcs@gmail.com>
+ * @since Jun 22, 2021
+ */
 public class Organism {
 
+    /** Gene Array, determines an Organisms movements */
     private Gene[] genes;
+
+    /** Positioning */
     private int xPos;
     private int yPos;
+
+    /** Index, marks where in the gene's sequence the organism is */
     private int geneIndex;
+
+    /** Fitness of the organism */
     private double fitness;
 
+    /** Number of genes/movements each organism has */
     private static final int GENE_LENGTH = 100;
 
     /**
-     * Default Constructor for the Organism class
+     * Organism Class Constructor
+     * Creates an Organism at the specificed coordinates
+     * @param initialX Initial X position of the Organism
+     * @param initialY Initial Y position of the Organism
      */
     public Organism(int initialX, int initialY) {
         xPos = initialX;
@@ -30,6 +47,12 @@ public class Organism {
     }
 
 
+    /**
+     * Organism Class Secondary Constructor
+     * @param initialX Initial X position of the Organism
+     * @param initialY Initial Y position of the Organism
+     * @param geneArr Predefined Gene array for crossing over
+     */
     public Organism(int initialX, int initialY, Gene[] geneArr) {
         xPos = initialX;
         yPos = initialY;
@@ -105,11 +128,6 @@ public class Organism {
     }
 
 
-    public void setGenes(Gene[] newGenes) {
-        genes = newGenes;
-    }
-
-
     /**
      * Returns the fitness of a Organism
      * @return the fitness of a Organism
@@ -121,9 +139,9 @@ public class Organism {
 
     /**
      * Calculates and returns the fitness of an organism
-     * @param x
-     * @param y
-     * @return
+     * @param x Organism's current x position
+     * @param y Organism's current x position
+     * @return The fitness of the organism. 1 is best, 0 is worst
      */
     public double calculateFitness() {
         double distanceToGoal = distance(xPos, yPos, NSGADisplay.GOAL_X,
@@ -153,6 +171,11 @@ public class Organism {
     }
 
 
+    /**
+     * Crossovers the genes between two parents to form the child
+     * @param partner Partner to crossover with
+     * @return the resultant child organism
+     */
     public Organism crossover(Organism partner) {
         Gene[] childGenes = new Gene[genes.length];
         for (int i = 0; i < genes.length; i++) {
@@ -173,6 +196,10 @@ public class Organism {
     }
 
 
+    /**
+     * Mutates the gene depending on the mutation rate
+     * @param mutationRate Mutation rate of the population
+     */
     public void mutate(double mutationRate) {
         for (int i = 0; i < genes.length; i++) {
             if (Math.random() <= mutationRate) {
