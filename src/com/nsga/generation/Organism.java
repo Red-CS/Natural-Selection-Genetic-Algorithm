@@ -1,5 +1,6 @@
 package com.nsga.generation;
 
+import java.text.DecimalFormat;
 import com.nsga.NSGADisplay;
 
 public class Organism {
@@ -19,6 +20,7 @@ public class Organism {
         xPos = initialX;
         yPos = initialY;
         geneIndex = 0;
+        fitness = 0.0;
 
         // Fill genes
         genes = new Gene[GENE_LENGTH];
@@ -132,9 +134,6 @@ public class Organism {
         if (fitness < 0) {
             fitness = 0.0;
         }
-// System.out.println("Distance: " + distanceToGoal + ", Fitness: "
-// + fitness);
-// System.out.println(xPos + " " + yPos);
         return fitness;
 
     }
@@ -174,15 +173,25 @@ public class Organism {
     }
 
 
+    public void mutate(double mutationRate) {
+        for (int i = 0; i < genes.length; i++) {
+            if (Math.random() <= mutationRate) {
+                genes[i] = new Gene();
+            }
+        }
+    }
+
+
     /**
      * Returns a String representation of a Organism
      * @return a String representation of a Organism
      */
     @Override
     public String toString() {
+        DecimalFormat df = new DecimalFormat("#.##");
 
-        return "[xPos: " + xPos + ", yPos: " + yPos + "] | Fitness : "
-            + fitness;
+        return "[x: " + xPos + ", y: " + yPos + "] | Fitness : " + df.format(
+            fitness);
     }
 
 }

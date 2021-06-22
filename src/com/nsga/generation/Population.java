@@ -11,7 +11,7 @@ import com.nsga.NSGADisplay;
 public class Population {
 
     private Organism[] organisms;
-    private double averagePopulation;
+    private double averageFitness;
     private static final int POPULATION_SIZE = 100;
     private static final double MUTATION_RATE = 0.02;
 
@@ -63,12 +63,29 @@ public class Population {
                 .size()));
 
             Organism child = mother.crossover(father);
+            child.mutate(MUTATION_RATE);
             newPopulation[i] = child;
-// System.out.println(child.toString());
         }
 
         return new Population(newPopulation);
 
+    }
+
+
+    public double getAverageFitness() {
+        return averageFitness;
+    }
+
+
+    public double calculateAverageFitness() {
+        double sum = 0;
+        for (Organism o : organisms) {
+            sum += o.getFitness();
+        }
+        System.out.println(sum);
+        averageFitness = sum / organisms.length;
+        System.out.println("Average Fitness: " + averageFitness);
+        return averageFitness;
     }
 
 

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import com.nsga.generation.Organism;
@@ -17,11 +18,12 @@ import com.nsga.generation.Population;
  */
 public class NSGADisplay extends JPanel {
 
-    private int count = 0;
+    private double lastPopAvgFitness;
     private int generationNumber = 1;
     private Timer generationIncTimer;
     private Population currentPopulation;
     private Organism[] currentOrganisms;
+    private DecimalFormat df;
 
     /** The tick delay for the Timer (ms) */
     private final int TIMER_DELAY = 50;
@@ -58,12 +60,11 @@ public class NSGADisplay extends JPanel {
 
         currentPopulation = new Population();
         currentOrganisms = currentPopulation.getOrganisms();
+        lastPopAvgFitness = currentPopulation.getAverageFitness();
+
+        df = new DecimalFormat("#.##");
 
         init();
-
-// repaint();
-
-// System.out.println("Finished");
     }
 
 
@@ -89,11 +90,12 @@ public class NSGADisplay extends JPanel {
 // System.out.println(count++);
                 if (!currentOrganisms[0].hasNextGene()) {
                     generationIncTimer.stop();
-                    count = 0;
+
                     for (int i = 0; i < currentOrganisms.length; i++) {
                         currentOrganisms[i].calculateFitness();
                     }
-
+                    lastPopAvgFitness = currentPopulation
+                        .calculateAverageFitness();
                     // Create new Generations
                     System.out.println(
                         "----------------------------------------------------------------------------------");
@@ -130,8 +132,8 @@ public class NSGADisplay extends JPanel {
 
         // Paint window information
         g.drawString("Generation: " + generationNumber, 20, STARTING_Y);
-// g.drawString("Average Fitness: " + currentGen.getFitness(), 20,
-// STARTING_Y + 20);
+        g.drawString("Average Fitness: " + df.format(lastPopAvgFitness), 20,
+            STARTING_Y + 20);
 
         // Otherwise, paint population's next step
         for (int j = 0; j < currentOrganisms.length; j++) {
