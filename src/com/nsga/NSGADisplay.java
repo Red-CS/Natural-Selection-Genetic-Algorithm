@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.swing.JButton;
@@ -31,8 +33,8 @@ public class NSGADisplay extends JPanel {
     private Organism[] currentOrganisms;
     private ExcelWriter writer;
     private DecimalFormat df;
-    // TODO add collision detection
-    private boolean hasReachedTarget;
+
+    private boolean logOutput;
 
     /** The tick delay for the Timer (ms) */
     private final int TIMER_DELAY = 50;
@@ -79,7 +81,7 @@ public class NSGADisplay extends JPanel {
 
         df = new DecimalFormat("#.##");
 
-        hasReachedTarget = false;
+        logOutput = false;
 
 // init();
     }
@@ -113,7 +115,6 @@ public class NSGADisplay extends JPanel {
                         if (hasReachedGoal(currentOrganisms[i].getX(),
                             currentOrganisms[i].getY())) {
                             System.out.println("Has Reached Goal!");
-// System.exit(0);
                         }
                     }
                     lastPopAvgFitness = currentPopulation
@@ -128,7 +129,9 @@ public class NSGADisplay extends JPanel {
                     System.out.println(currentPopulation.toString());
 
                     // Log to Excel
-                    logToExcel();
+                    if (logOutput) {
+                        logToExcel();
+                    }
 
                     currentPopulation = currentPopulation.naturalSelection();
                     currentOrganisms = currentPopulation.getOrganisms();
@@ -207,6 +210,12 @@ public class NSGADisplay extends JPanel {
         public NSGAControl(int x, int y, int width, int height) {
             setBounds(x, y, width, height);
             JCheckBox checkBox = new JCheckBox("Print to Excel?");
+            checkBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    logOutput = e.getStateChange() == 1;
+                }
+            });
             JButton startButton = new JButton("Start");
             startButton.addActionListener(new ActionListener() {
 
@@ -214,8 +223,9 @@ public class NSGADisplay extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     startButton.setEnabled(false);
                     checkBox.setEnabled(false);
+
                     try {
-                        writer = new ExcelWriter("Natural Selection.xlsx", "NS "
+                        writer = new ExcelWriter("Selection.xlsx", "NS "
                             + Population.POPULATION_SIZE, "GENERATION",
                             "AVG FITNESS");
                     }
