@@ -14,7 +14,7 @@ public class Gene {
     private DecimalFormat df;
 
     /** Multiplies the predetermined movement to increase visual effect */
-    private static final int MOVEMENT_MULTIPLIER = 15;
+    private static final int MOVEMENT_MULTIPLIER = 8;
 
     /**
      * Gene Constructor

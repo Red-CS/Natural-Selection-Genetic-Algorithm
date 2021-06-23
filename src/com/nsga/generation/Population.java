@@ -20,7 +20,7 @@ public class Population {
     private double averageFitness;
 
     /** Population size, larger size for better results */
-    public static final int POPULATION_SIZE = 100;
+    public static final int POPULATION_SIZE = 200;
 
     /** Mutation rate of the population */
     public static final double MUTATION_RATE = 0.02;

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import com.nsga.generation.Organism;
 import com.nsga.generation.Population;
+import com.nsga.util.ExcelWriter;
 
 /**
  * Panel for the Natural Selection Genetic Algorithm
@@ -27,6 +29,7 @@ public class NSGADisplay extends JPanel {
     private Timer generationIncTimer;
     private Population currentPopulation;
     private Organism[] currentOrganisms;
+    private ExcelWriter writer;
     private DecimalFormat df;
     // TODO add collision detection
     private boolean hasReachedTarget;
@@ -123,6 +126,10 @@ public class NSGADisplay extends JPanel {
                         + "|| Average Fitness: " + df.format(
                             lastPopAvgFitness));
                     System.out.println(currentPopulation.toString());
+
+                    // Log to Excel
+                    logToExcel();
+
                     currentPopulation = currentPopulation.naturalSelection();
                     currentOrganisms = currentPopulation.getOrganisms();
                     generationNumber++;
@@ -182,6 +189,11 @@ public class NSGADisplay extends JPanel {
             && (y >= GOAL_Y && y <= GOAL_Y + DESTINATION_RECT_SIZE);
     }
 
+
+    private void logToExcel() {
+        writer.logGeneration(generationNumber, lastPopAvgFitness);
+    }
+
     /**
      * 
      * @author Red Williams <red.devcs@gmail.com>
@@ -202,7 +214,15 @@ public class NSGADisplay extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     startButton.setEnabled(false);
                     checkBox.setEnabled(false);
-
+                    try {
+                        writer = new ExcelWriter("Natural Selection.xlsx", "NS "
+                            + Population.POPULATION_SIZE, "GENERATION",
+                            "AVG FITNESS");
+                    }
+                    catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     init();
 
                 }
