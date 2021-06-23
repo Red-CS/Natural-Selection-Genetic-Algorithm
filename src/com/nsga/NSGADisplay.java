@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import com.nsga.generation.Organism;
 import com.nsga.generation.Population;
+import com.nsga.util.CheckBox;
+import com.nsga.util.StartButton;
 
 /**
  * Panel for the Natural Selection Genetic Algorithm
@@ -26,6 +28,8 @@ public class NSGADisplay extends JPanel {
     private Population currentPopulation;
     private Organism[] currentOrganisms;
     private DecimalFormat df;
+    // TODO add collision detection
+    private boolean hasReachedTarget;
 
     /** The tick delay for the Timer (ms) */
     private final int TIMER_DELAY = 50;
@@ -35,6 +39,9 @@ public class NSGADisplay extends JPanel {
 
     /** Size of the destination pad */
     private static final int DESTINATION_RECT_SIZE = 25;
+
+// private static final int CONTROL_PANEL_WIDTH;
+// private static final int CONTROL_PANEL_HEIGHT;
 
     /** Starting X position of the dots */
     public static final int STARTING_X = (NSGAWindow.WINDOW_WIDTH / 2)
@@ -55,6 +62,9 @@ public class NSGADisplay extends JPanel {
      * @param height
      */
     public NSGADisplay(int width, int height) {
+        setLayout(null);
+        NSGAControl control = new NSGAControl(10, 375, 250, 200);
+        add(control);
         setPreferredSize(new Dimension(width, height));
         setBackground(new Color(66, 134, 244));
         setFocusable(true);
@@ -65,6 +75,8 @@ public class NSGADisplay extends JPanel {
         lastPopAvgFitness = currentPopulation.getAverageFitness();
 
         df = new DecimalFormat("#.##");
+
+        hasReachedTarget = false;
 
         init();
     }
@@ -95,6 +107,11 @@ public class NSGADisplay extends JPanel {
                     // Calculate fitnesses
                     for (int i = 0; i < currentOrganisms.length; i++) {
                         currentOrganisms[i].calculateFitness();
+                        if (hasReachedGoal(currentOrganisms[i].getX(),
+                            currentOrganisms[i].getY())) {
+                            System.out.println("Has Reached Goal!");
+// System.exit(0);
+                        }
                     }
                     lastPopAvgFitness = currentPopulation
                         .calculateAverageFitness();
@@ -122,8 +139,8 @@ public class NSGADisplay extends JPanel {
      * @param g Painting Graphics Object
      */
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
         // Paint the starting circle
         g.setColor(new Color(253, 201, 200)); // Coral Candy
@@ -153,4 +170,37 @@ public class NSGADisplay extends JPanel {
 
     }
 
+
+    /**
+     * Returns whether or not a dot has reached the goal
+     * @param x X position of the dot
+     * @param y Y position of the dot
+     * @return whether or not a dot has reached the goal
+     */
+    private boolean hasReachedGoal(int x, int y) {
+        return (x >= GOAL_X && x <= GOAL_X + DESTINATION_RECT_SIZE)
+            && (y >= GOAL_Y && y <= GOAL_Y + DESTINATION_RECT_SIZE);
+    }
+
+    /**
+     * 
+     * @author Red Williams <red.devcs@gmail.com>
+     * @since Jun 22, 2021
+     */
+    private class NSGAControl extends JPanel {
+
+        /**
+         * NSGAControl Class Constructor
+         */
+        public NSGAControl(int x, int y, int width, int height) {
+            setBounds(x, y, width, height);
+            StartButton start = new StartButton("Start");
+            CheckBox cb = new CheckBox("Print to Excel?");
+            add(cb);
+            add(start);
+            setBackground(new Color(0, 0, 0, 12));
+
+        }
+
+    }
 }
