@@ -7,12 +7,12 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import com.nsga.generation.Organism;
 import com.nsga.generation.Population;
-import com.nsga.util.CheckBox;
-import com.nsga.util.StartButton;
 
 /**
  * Panel for the Natural Selection Genetic Algorithm
@@ -78,7 +78,7 @@ public class NSGADisplay extends JPanel {
 
         hasReachedTarget = false;
 
-        init();
+// init();
     }
 
 
@@ -194,10 +194,21 @@ public class NSGADisplay extends JPanel {
          */
         public NSGAControl(int x, int y, int width, int height) {
             setBounds(x, y, width, height);
-            StartButton start = new StartButton("Start");
-            CheckBox cb = new CheckBox("Print to Excel?");
-            add(cb);
-            add(start);
+            JCheckBox checkBox = new JCheckBox("Print to Excel?");
+            JButton startButton = new JButton("Start");
+            startButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    startButton.setEnabled(false);
+                    checkBox.setEnabled(false);
+
+                    init();
+
+                }
+            });
+            add(checkBox);
+            add(startButton);
             setBackground(new Color(0, 0, 0, 12));
 
         }
